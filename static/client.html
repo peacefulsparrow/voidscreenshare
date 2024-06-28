@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <div>
+        <input value="6A-101">
+        <button onclick="register(this.previousElementSibling.value)">Start listening</button>
+        <div class="videoContainer">
+            <video id="videoPreview" controls></video>
+        </div>
+
+        <div>Manual connect (for serverless connections):</div>
+        <button onclick="startPeer()">Start peer connection</button>
+        <br>
+        <input>
+        <button onclick="onReceiveSDPOffer(JSON.parse(this.previousElementSibling.value))">Set SDP answer</button>
+        <br>
+        <input>
+        <button onclick="onReceiveICECandidate(JSON.parse(this.previousElementSibling.value))">Add remote ICE candidate</button>
+        <br>
+        Preferred codec:
+        <select id="codec">
+            <option selected value="">Default</option>
+        </select>
+        <br>
+    </div>
+
+    <div id="console"></div>
+
+    <script src="main.js"></script>
+    <script>
+        function register(name) {
+            // register on server
+            initSignal(name, 'client')
+        }
+
+        // init RTCPeerConnection
+        //
+        function startPeer() {
+            printMsg('Received request to start peer connection', 'success')
+            initPeerConnection()
+            // listen for video track
+            peerConnection.ontrack = (e) => {
+                playVideo(e.streams[0])
+            }
+        }
+
+        // listen for video data and print info
+        videoEl.onloadeddata = () => {
+            printMsg(`Video loaded: ${videoEl.videoWidth}x${videoEl.videoHeight}`, 'success')
+            printPeerCodec()
+        }
+
+        getRecvCodec()
+
+        printMsg('Hello from client!')
+    </script>
+</body>
+
+</html>

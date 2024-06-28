@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoidScreenshare host</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <a class="item small" href="menu.html">menu</a>
+    <div class="wrapper">
+        <p class="title">VoidScreenshare</p>
+        <div class="inputlabel">Resolution (pixels height):
+            <input class="input" id="resolution" type="number" value="800">
+        </div>
+        <div class="inputlabel">Framerate (fps):
+            <input class="input" id="fps" type="number" value="60">
+        </div>
+        <div class="inputlabel">Birate (Kbps):
+            <input class="input" id="bitrate" type="number" value="20000">
+        </div>
+        <button onclick="register()">Start sharing</button>
+        <video style="height: 33%;" id="videoPreview" muted></video>
+        <div id="console"></div>
+    </div>
+    <script src="main.js"></script>
+    <script>
+        async function register() {
+            // start local video
+            try {
+                var stream = await navigator.mediaDevices.getDisplayMedia(
+                    {
+                        video: {
+                            displaySurface: "monitor",
+                            height: parseInt(document.getElementById('resolution').value),
+                            frameRate: parseInt(document.getElementById('fps').value),
+                        },
+                        audio: {
+                            echoCancellation: false,
+                            noiseSuppression: false,
+                            suppressLocalAudioPlayback: false,
+                        },
+                    }
+                );
+            } catch (error) {
+                printMsg(`Error accessing screen: ${error}`, 'error');
+                return
+            }
+
+            playVideo(stream)
+
+            // register on server
+            initSignal('void', 'host')
+        }
+
+        // init RTCPeerConnection
+        //
+        function startPeer() {
+            printMsg('Received request to start peer connection', 'success')
+            initPeerConnection()
+            // add video track
+            stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
+        }
+
+        printMsg('Hello from host!')
+    </script>
+</body>
+
+</html>

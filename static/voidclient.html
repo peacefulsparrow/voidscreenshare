@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoidScreenshare client</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <div class="videoContainer">
+        <div class="wrapper behind">
+            <p class="title">VoidScreenshare</p>
+            <p class="title">stargazer.local:3003</p>
+        </div>
+        <video class="front" id="videoPreview" controls autoplay></video>
+    </div>
+
+    <select style="display: none;" id="codec">
+        <option selected value="">Default</option>
+    </select>
+
+    <div style="display:none" id="console"></div>
+
+    <script src="main.js"></script>
+    <script>
+        // register on server
+        initSignal('void', 'client')
+
+        // init RTCPeerConnection
+        //
+        function startPeer() {
+            printMsg('Received request to start peer connection', 'success')
+            initPeerConnection()
+            // listen for video track
+            peerConnection.ontrack = (e) => {
+                playVideo(e.streams[0])
+            }
+        }
+
+        // listen for video data and print info
+        videoEl.onloadeddata = () => {
+            printMsg(`Video loaded: ${videoEl.videoWidth}x${videoEl.videoHeight}`, 'success')
+            printPeerCodec()
+        }
+
+        getRecvCodec()
+
+        printMsg('Hello from client!')
+    </script>
+</body>
+
+</html>
