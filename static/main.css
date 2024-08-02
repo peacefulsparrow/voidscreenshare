@@ -11,7 +11,7 @@ body {
     background-attachment: fixed;
     box-sizing: border-box;
     color: white;
-    font-family: 'Courier New', monospace;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 body>div {
@@ -54,7 +54,7 @@ body>div {
     align-items: center;
     border: 2px solid white;
     margin: 4px;
-    background-color: gainsboro;
+    background-color: #dcdcdcdd;
     text-decoration: none;
     color: black;
     font-size: 20px;
@@ -85,10 +85,11 @@ body>div {
     width: 400px;
     display: flex;
     justify-content: space-between;
+    margin: 2px 0px;
 }
 
 button {
-    background-color: gainsboro;
+    background-color: #dcdcdcdd;
     border: 2px solid white;
     color: black;
     padding: 6px 12px;
@@ -97,12 +98,29 @@ button {
     display: inline-block;
     margin-top: 6px;
     cursor: pointer;
-  }
+    font-family: 'Courier New', Courier, monospace;
+}
 
-  button:hover {
+button:hover {
     background-color: white;
     text-decoration: underline;
-  }
+}
+
+input {
+    background-color: #dcdcdcdd;
+    border: 1px solid white;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 2px;
+}
+
+input:hover {
+    background-color: white;
+}
+
+input:focus {
+    background-color: white;
+}
+
 
 #videoPreview {
     width: 100%;
